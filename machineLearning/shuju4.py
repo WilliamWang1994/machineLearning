@@ -2,21 +2,26 @@ from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 import numpy as np
 mnist      =input_data.read_data_sets('data/',one_hot=True)
-training   =mnist.train.images
+trainimage   =mnist.train.images
 trainlabel =mnist.train.labels
 testimg    =mnist.test.images
 testlabel  =mnist.test.labels
 print("MNIST loaded")
-print(training.shape)
-print(trainlabel.shape)
-print(testimg.shape)
-print(testlabel.shape)
+# print(trainimage.shape)
+# print(trainlabel.shape)
+# print(testimg.shape)
+# print(testlabel.shape)
+
 x=tf.placeholder("float",[None,784])
 y=tf.placeholder("float",[None,10])
+
 W=tf.Variable(tf.zeros([784,10]))
 b=tf.Variable(tf.zeros([10]))
+
 actv=tf.nn.softmax(tf.matmul(x,W)+b)
-cost=tf.reduce_mean(-tf.reduce_sum(y*tf.log(actv),reduction_indices=1))
+
+cost=tf.reduce_mean(-tf.reduce_sum(y*tf.log(actv),reduction_indices=1))#交叉熵
+
 learning_rate=0.01
 optm=tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 pred=tf.equal(tf.argmax(actv,1),tf.argmax(y,1))
